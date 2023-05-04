@@ -46,16 +46,12 @@ public class VuePuitsAffichageTest {
         // Generer la piece
         UsineDePiece.setMode(UsineDePiece.ALEATOIRE_COMPLET);
         Piece piece = UsineDePiece.genererPiece();
-
         // Creer une vuePuits
         VuePuits vuePuits = new VuePuits(new Puits(10, 20), 30);
-
         // Creer une vuePiece
         VuePiece vuePiece = new VuePiece(piece, vuePuits.getTaille());
-
         // Ajouter la vuePiece dans la vuePuits
         vuePuits.setVuePiece(vuePiece);
-
         JFrame jFrame = new JFrame();
         // Ajoute un titre à la fenêtre
         jFrame.setTitle("Puits et pièce");
@@ -68,10 +64,39 @@ public class VuePuitsAffichageTest {
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    private void testPuitsEtPiecesAuto() {
+        // Creer une vuePuits
+        VuePuits vuePuits = new VuePuits(new Puits(10, 20), 30);
+        // Enregistrer le listener
+        vuePuits.getPuits().addPropertyChangeListener(vuePuits);
+
+        JFrame jFrame = new JFrame();
+        // Ajoute un titre à la fenêtre
+        jFrame.setTitle("Puits et pièce");
+        jFrame.add(vuePuits);
+        jFrame.pack();  // Redimensionne la fenêtre
+        // Centre la fenêtre sur l'écran
+        jFrame.setLocationRelativeTo(null);
+        jFrame.setVisible(true);
+
+        // Generer la piece
+        UsineDePiece.setMode(UsineDePiece.ALEATOIRE_COMPLET);
+        Piece piece = UsineDePiece.genererPiece();
+        // Ajouter la piece au puits
+        vuePuits.getPuits().setPieceSuivante(piece);
+
+        // Ajouter une deuxieme piece
+        piece = UsineDePiece.genererPiece();
+        vuePuits.getPuits().setPieceSuivante(piece);
+
+        // S'assurer que la fenêtre est bien fermer quand on clique sur la croix
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     public void testPanneau() {
         this.testConstructeurPuits();
         this.testConstructeurPuitsTaille();
-        this.testPuitsEtPieces();
+        this.testPuitsEtPiecesAuto();
     }
 
     public static void main (String [] args) {

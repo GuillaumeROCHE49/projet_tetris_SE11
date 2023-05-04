@@ -2,18 +2,26 @@ package fr.eseo.e3.poo.projet.blox.modele;
 
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class Puits {
     public static final int LARGEUR_PAR_DEFAUT = 10;
     public static final int PROFONDEUR_PAR_DEFAUT = 20;
-    private static final int LARGEUR_MIN = 5, LARGEUR_MAX = 15;
-    private static final int PROFONDEUR_MIN = 15, PROFONDEUR_MAX = 25;
+    private static final int LARGEUR_MIN = 5;
+    private static final int LARGEUR_MAX = 15;
+    private static final int PROFONDEUR_MIN = 15;
+    private static final int PROFONDEUR_MAX = 25;
+
+    public static final String MODIFICATION_PIECE_ACTUELLE = "PieceActuelle";
+    public static final String MODIFICATION_PIECE_SUIVANTE = "PieceSuivante";
 
     private int largeur;
     private int profondeur;
     private Piece pieceActuelle;
     private Piece pieceSuivante;
+
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     
     public Puits() {
         this(LARGEUR_PAR_DEFAUT, PROFONDEUR_PAR_DEFAUT);
@@ -45,12 +53,20 @@ public class Puits {
     }
 
     public void setPieceSuivante(Piece pieceSuivante) {
-        if (this.pieceSuivante != null) {
+        if (this.pieceSuivante != null) { // Si une pièce suivante existe déjà
+            // Appel de firePropertyChange pour prévenir les écouteurs
+            this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE,
+                    this.pieceSuivante, pieceSuivante);
+            this.pcs.firePropertyChange(MODIFICATION_PIECE_ACTUELLE,
+                    this.pieceActuelle, this.pieceSuivante);        
             this.pieceActuelle = this.pieceSuivante;
+            
             this.pieceActuelle.setPosition(LARGEUR_PAR_DEFAUT/2, -4);
             this.pieceSuivante = pieceSuivante;
         } else {
-            this.pieceSuivante = pieceSuivante;
+            this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE,
+                    this.pieceSuivante, pieceSuivante);
+            this.pieceSuivante = pieceSuivante; // Si aucune pièce suivante
         }
     }
 
@@ -64,6 +80,14 @@ public class Puits {
         if (profondeur < PROFONDEUR_MIN || profondeur > PROFONDEUR_MAX)
             throw new IllegalArgumentException("Profondeur incorrecte");
         this.profondeur = profondeur;
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
     }
 
     @Override

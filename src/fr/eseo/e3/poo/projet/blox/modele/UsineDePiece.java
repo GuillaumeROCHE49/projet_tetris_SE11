@@ -1,6 +1,5 @@
 package fr.eseo.e3.poo.projet.blox.modele;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,6 +19,8 @@ public class UsineDePiece {
     public static final int ALEATOIRE_COMPLET = 0;
     public static final int ALEATOIRE_PIECE = 1;
     public static final int CYCLIC = 2;
+
+    private static final Random RANDOM = new Random();
 
     private static int mode = ALEATOIRE_COMPLET;
     private static int pieceIndex = 0;
@@ -53,21 +54,20 @@ public class UsineDePiece {
     }
 
     private static Piece genererPieceAleatoire() {
-        Random random = new Random();
-        Couleur couleur = Couleur.values()[random.nextInt(7)];
+        
+        Couleur couleur = Couleur.values()[RANDOM.nextInt(7)];
         List<Piece> pieces = List.of(new OPiece(new Coordonnees(2, 3), couleur),
                                     new IPiece(new Coordonnees(2, 3), couleur),
                                     new TPiece(new Coordonnees(2, 3), couleur));
-        return pieces.get(random.nextInt(pieces.size()));
+        return pieces.get(RANDOM.nextInt(pieces.size()));
 
     }
 
     private static Piece genererPieceAleatoireMemeCouleur() {
-        Random random = new Random();
         List<Piece> pieces = List.of(new OPiece(new Coordonnees(2, 3), Couleur.ROUGE),
                                     new IPiece(new Coordonnees(2, 3), Couleur.ORANGE),
                                     new TPiece(new Coordonnees(2, 3), Couleur.BLEU));
-        return pieces.get(random.nextInt(pieces.size()));
+        return pieces.get(RANDOM.nextInt(pieces.size()));
     }
 
     private static Piece genererPieceCyclique() {

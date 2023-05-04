@@ -29,7 +29,7 @@ public class VuePiece {
         g = (int)(g + (255 - g) * VuePiece.MULTIPLIER_TEINTE);
         b = (int)(b + (255 - b) * VuePiece.MULTIPLIER_TEINTE);
 
-        return new Color(r, g, b, 255);
+        return new Color(r, g, b, alpha);
     }
 
     public void afficherPiece(Graphics2D g2D) {

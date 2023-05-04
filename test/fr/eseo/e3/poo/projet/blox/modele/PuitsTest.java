@@ -36,7 +36,7 @@ public class PuitsTest {
     void testConstructeur2(int largeur, int profondeur) {
         // Renvoie IllegalArgumentException si les dimensions sont incorrectes
         assertThrows(IllegalArgumentException.class, () -> {
-            Puits puits = new Puits(largeur, profondeur);
+            new Puits(largeur, profondeur);
         });
     }
 

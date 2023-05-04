@@ -4,14 +4,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-// Cette classe est la vue graphique du puits.
-// Elle est une sous classe de javax.swing.Jpanel
-
 import javax.swing.JPanel;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
 
-public class VuePuits extends JPanel {
+public class VuePuits extends JPanel implements PropertyChangeListener {
     public static final int TAILLE_PAR_DEFAUT = 20;
 
     private Puits puits;
@@ -85,5 +85,15 @@ public class VuePuits extends JPanel {
             this.vuePiece.afficherPiece(g2D);
         }
         g2D.dispose();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        // Verifier que l'evenement concerne PieceActuelle
+        if (evt.getPropertyName().equals(Puits.MODIFICATION_PIECE_ACTUELLE)) {
+            // Mettre a jour la vue de la piece
+            this.setVuePiece(new VuePiece(this.puits.getPieceActuelle(), this.taille));
+            this.repaint(); // Redessiner le puits
+        }
     }
 }
