@@ -53,20 +53,19 @@ public class Puits {
     }
 
     public void setPieceSuivante(Piece pieceSuivante) {
-        if (this.pieceSuivante != null) { // Si une pièce suivante existe déjà
-            // Appel de firePropertyChange pour prévenir les écouteurs
+        if (this.pieceSuivante != null) { // Si une pièce suivante existe déjà                   
+            this.pieceActuelle = this.pieceSuivante;
+            this.pieceActuelle.setPosition(LARGEUR_PAR_DEFAUT/2, -4);
+            this.pieceSuivante = pieceSuivante;
+
             this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE,
                     this.pieceSuivante, pieceSuivante);
             this.pcs.firePropertyChange(MODIFICATION_PIECE_ACTUELLE,
-                    this.pieceActuelle, this.pieceSuivante);        
-            this.pieceActuelle = this.pieceSuivante;
-            
-            this.pieceActuelle.setPosition(LARGEUR_PAR_DEFAUT/2, -4);
-            this.pieceSuivante = pieceSuivante;
+                    this.pieceActuelle, this.pieceSuivante); // On notifie les vues
         } else {
+            this.pieceSuivante = pieceSuivante; // Si aucune pièce suivante
             this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE,
                     this.pieceSuivante, pieceSuivante);
-            this.pieceSuivante = pieceSuivante; // Si aucune pièce suivante
         }
     }
 

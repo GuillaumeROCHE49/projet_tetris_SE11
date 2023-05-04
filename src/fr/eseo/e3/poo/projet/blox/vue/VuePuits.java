@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
+import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
 public class VuePuits extends JPanel implements PropertyChangeListener {
     public static final int TAILLE_PAR_DEFAUT = 20;
@@ -58,11 +59,12 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.puits = puits;
         this.largeur = taille * puits.getLargeur();
         this.profondeur = taille * puits.getProfondeur();
+        this.getPuits().addPropertyChangeListener(this);
         this.setPreferredSize(new Dimension(
             this.largeur, this.profondeur));
     }
 
-    public void setVuePiece(VuePiece vuePiece) {
+    private void setVuePiece(VuePiece vuePiece) {
         this.vuePiece = vuePiece;
     }
 
@@ -73,11 +75,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         g.setColor(java.awt.Color.LIGHT_GRAY);
         for (int i = 0; i < this.puits.getLargeur(); i++) {
             // Dessiner les lignes verticales
-            g.drawLine(i * this.taille, 0, i * this.taille, this.getPreferredSize().height);
+            g.drawLine(i * this.getTaille(), 0, i * this.getTaille(), this.getPreferredSize().height);
         }
         for (int i = 0; i < this.puits.getProfondeur(); i++) {
             // Dessiner les lignes horizontales
-            g.drawLine(0, i * this.taille, this.getPreferredSize().width, i * this.taille);
+            g.drawLine(0, i * this.getTaille(), this.getPreferredSize().width, i * this.getTaille());
         }
         Graphics2D g2D = (Graphics2D)g.create();
         // Dessiner les pieces
@@ -88,12 +90,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(PropertyChangeEvent event) {
         // Verifier que l'evenement concerne PieceActuelle
-        if (evt.getPropertyName().equals(Puits.MODIFICATION_PIECE_ACTUELLE)) {
+        if (event.getPropertyName().equals(Puits.MODIFICATION_PIECE_ACTUELLE)) {
             // Mettre a jour la vue de la piece
-            this.setVuePiece(new VuePiece(this.puits.getPieceActuelle(), this.taille));
-            this.repaint(); // Redessiner le puits
+            this.setVuePiece(new VuePiece((Piece)event.getNewValue(), this.getTaille()));
         }
     }
 }

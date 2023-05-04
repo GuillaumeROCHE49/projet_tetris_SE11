@@ -65,11 +65,20 @@ public class VuePuitsAffichageTest {
     }
 
     private void testPuitsEtPiecesAuto() {
-        // Creer une vuePuits
+        // Creer une vuePuits --------------------------------
         VuePuits vuePuits = new VuePuits(new Puits(10, 20), 30);
-        // Enregistrer le listener
-        vuePuits.getPuits().addPropertyChangeListener(vuePuits);
 
+        // Generer la piece ----------------------------------
+        UsineDePiece.setMode(UsineDePiece.ALEATOIRE_COMPLET);
+        Piece piece = UsineDePiece.genererPiece();
+        // Ajouter la piece au puits
+        vuePuits.getPuits().setPieceSuivante(piece);
+
+        // Ajouter une deuxieme piece
+        Piece piece2 = UsineDePiece.genererPiece();
+        vuePuits.getPuits().setPieceSuivante(piece2);
+
+        // Creer une frame --------------------------------
         JFrame jFrame = new JFrame();
         // Ajoute un titre à la fenêtre
         jFrame.setTitle("Puits et pièce");
@@ -78,16 +87,6 @@ public class VuePuitsAffichageTest {
         // Centre la fenêtre sur l'écran
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
-
-        // Generer la piece
-        UsineDePiece.setMode(UsineDePiece.ALEATOIRE_COMPLET);
-        Piece piece = UsineDePiece.genererPiece();
-        // Ajouter la piece au puits
-        vuePuits.getPuits().setPieceSuivante(piece);
-
-        // Ajouter une deuxieme piece
-        piece = UsineDePiece.genererPiece();
-        vuePuits.getPuits().setPieceSuivante(piece);
 
         // S'assurer que la fenêtre est bien fermer quand on clique sur la croix
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
