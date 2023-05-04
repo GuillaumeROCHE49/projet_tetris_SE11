@@ -1,5 +1,6 @@
 package fr.eseo.e3.poo.projet.blox.vue;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -11,10 +12,14 @@ import javax.swing.JPanel;
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
 
 public class VuePuits extends JPanel {
-    public static final int TAILLE_PAR_DEFAUT = 10;
+    public static final int TAILLE_PAR_DEFAUT = 20;
 
     private Puits puits;
+    private VuePiece vuePiece;
+
     private int taille;
+    private int largeur;
+    private int profondeur;
 
     public VuePuits(Puits puits) {
         this(puits, VuePuits.TAILLE_PAR_DEFAUT);
@@ -23,11 +28,10 @@ public class VuePuits extends JPanel {
     public VuePuits(Puits puits, int taille) {
         this.puits = puits;
         this.taille = taille;
-        this.setSize(taille * puits.getLargeur(),
-                     taille * puits.getProfondeur());
-        this.setLayout(null);
-        this.setOpaque(false);
-        this.setVisible(true);
+        this.setTaille(taille);
+        this.setPuits(puits);
+        this.setBackground(java.awt.Color.WHITE);
+        this.vuePiece = null;
     }
 
     public Puits getPuits() {
@@ -38,30 +42,48 @@ public class VuePuits extends JPanel {
         return this.taille;
     }
 
+    public VuePiece getVuePiece() {
+        return this.vuePiece;
+    }
+
     public void setTaille(int taille) {
         this.taille = taille;
-        this.setSize(taille * this.puits.getLargeur(),
-                     taille * this.puits.getProfondeur());
+        this.largeur = taille * puits.getLargeur();
+        this.profondeur = taille * puits.getProfondeur();
+        this.setPreferredSize(new Dimension(
+            this.largeur, this.profondeur));
     }
 
     public void setPuits(Puits puits) {
         this.puits = puits;
-        this.setSize(taille * puits.getLargeur(),
-                     taille * puits.getProfondeur());
+        this.largeur = taille * puits.getLargeur();
+        this.profondeur = taille * puits.getProfondeur();
+        this.setPreferredSize(new Dimension(
+            this.largeur, this.profondeur));
+    }
+
+    public void setVuePiece(VuePiece vuePiece) {
+        this.vuePiece = vuePiece;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        /* appel vers super pour remplir le fond du JPanel */
-        /*Le paramètre g est copie en utilisant la méthode copie()
-        * puis converti en instance de Graphics2D grâce à
-        * un transtypage (cast) explicite.
-        */
-        Graphics2D g2D = (Graphics2D)g.create();
-        /* Nous utiliserons l'instance de Graphics2D*/
-        /*Puis nous liberons la memoire*/
-        g2D.dispose();
+        // Dessiner la grille using 
+        g.setColor(java.awt.Color.LIGHT_GRAY);
+        for (int i = 0; i < this.puits.getLargeur(); i++) {
+            // Dessiner les lignes verticales
+            g.drawLine(i * this.taille, 0, i * this.taille, this.getPreferredSize().height);
         }
-        
+        for (int i = 0; i < this.puits.getProfondeur(); i++) {
+            // Dessiner les lignes horizontales
+            g.drawLine(0, i * this.taille, this.getPreferredSize().width, i * this.taille);
+        }
+        Graphics2D g2D = (Graphics2D)g.create();
+        // Dessiner les pieces
+        if (this.vuePiece != null) {
+            this.vuePiece.afficherPiece(g2D);
+        }
+        g2D.dispose();
+    }
 }

@@ -2,6 +2,8 @@ package fr.eseo.e3.poo.projet.blox.modele;
 
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
+import java.beans.PropertyChangeSupport;
+
 public class Puits {
     public static final int LARGEUR_PAR_DEFAUT = 10;
     public static final int PROFONDEUR_PAR_DEFAUT = 20;
