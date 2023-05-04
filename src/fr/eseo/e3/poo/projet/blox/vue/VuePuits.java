@@ -71,17 +71,15 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Dessiner la grille using 
-        g.setColor(java.awt.Color.LIGHT_GRAY);
-        for (int i = 0; i < this.puits.getLargeur(); i++) {
-            // Dessiner les lignes verticales
-            g.drawLine(i * this.getTaille(), 0, i * this.getTaille(), this.getPreferredSize().height);
-        }
-        for (int i = 0; i < this.puits.getProfondeur(); i++) {
-            // Dessiner les lignes horizontales
-            g.drawLine(0, i * this.getTaille(), this.getPreferredSize().width, i * this.getTaille());
-        }
         Graphics2D g2D = (Graphics2D)g.create();
+        // Dessiner la grille using 
+        g2D.setColor(java.awt.Color.LIGHT_GRAY);
+        // Dessiner les carrées
+        for (int i = 0; i < this.getWidth(); i+=this.taille) {
+            for (int j = 0; j < this.getHeight(); j+=this.taille) {
+                g2D.drawRect(i, j, this.taille, this.taille);
+            }
+        }
         // Dessiner les pieces
         if (this.vuePiece != null) {
             this.vuePiece.afficherPiece(g2D);

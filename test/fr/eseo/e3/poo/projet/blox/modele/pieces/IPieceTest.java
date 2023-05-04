@@ -65,4 +65,28 @@ public class IPieceTest {
 		piece.setPuits(puits);
 		assertEquals(puits, piece.getPuits());
 	}
+
+	// Test parametisé de la méthode deplacerDe
+	@ParameterizedTest
+	@CsvSource({ "0, 0, 0, 0, 0, 0", "0, 0, 1, 0, 1, 0", "0, 0, 0, 1, 0, 1", "0, 0, -1, 0, -1, 0",
+				 "0, 0, 0, -1, 0, -1", "0, 0, 1, 1, 1, 1", "0, 0, -1, 1, -1, 1", "0, 0, -1, -1, -1, -1",
+				 "0, 0, 1, -1, 1, -1" })
+	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) {
+		IPiece piece = new IPiece(new Coordonnees(x, y), Couleur.BLEU);
+		piece.deplacerDe(dx, dy);
+		List<Element> elements = piece.getElements();
+		assertEquals(4, elements.size());
+		assertEquals(new Element(new Coordonnees(xFinal, yFinal), Couleur.BLEU), elements.get(0));
+		assertEquals(new Element(new Coordonnees(xFinal, yFinal+1), Couleur.BLEU), elements.get(1));
+		assertEquals(new Element(new Coordonnees(xFinal, yFinal-1), Couleur.BLEU), elements.get(2));
+		assertEquals(new Element(new Coordonnees(xFinal, yFinal-2), Couleur.BLEU), elements.get(3));
+	}
+
+	@Test
+	void testDeplacerDeErreur(){
+		IPiece piece = new IPiece(new Coordonnees(0, 0), Couleur.BLEU);
+		assertThrows(IllegalArgumentException.class, () -> {
+			piece.deplacerDe(1, 2);
+		});
+	}
 }

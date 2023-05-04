@@ -36,6 +36,15 @@ public abstract class Piece {
         this.puits = puits;
     }
 
+    public void deplacerDe(int deltaX, int deltaY) throws IllegalArgumentException {
+        // Verifier si le deplacement est possible
+        if (deltaX > 1 || deltaX < -1 || deltaY > 1)
+            throw new IllegalArgumentException("Deplacement impossible.");
+        
+        for (Element element : this.elements)
+            element.deplacerDe(deltaX, deltaY);
+    }
+
     @Override
     public String toString() {
         String str = "Piece :\n";
