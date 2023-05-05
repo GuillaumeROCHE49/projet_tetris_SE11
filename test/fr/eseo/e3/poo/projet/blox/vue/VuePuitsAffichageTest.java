@@ -51,7 +51,7 @@ public class VuePuitsAffichageTest {
         // Creer une vuePiece
         VuePiece vuePiece = new VuePiece(piece, vuePuits.getTaille());
         // Ajouter la vuePiece dans la vuePuits
-        vuePuits.setVuePiece(vuePiece);
+        //vuePuits.setVuePiece(vuePiece);
         JFrame jFrame = new JFrame();
         // Ajoute un titre à la fenêtre
         jFrame.setTitle("Puits et pièce");

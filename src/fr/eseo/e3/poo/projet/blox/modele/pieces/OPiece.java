@@ -10,6 +10,11 @@ public class OPiece extends Piece {
     }
 
     @Override
+    public void tourner(boolean sensHoraire) {
+        // Ne fait rien
+    }
+
+    @Override
     protected void setElements(Coordonnees coordonnees, Couleur couleur) {
         this.getElements().clear();
         this.getElements().add(new Element(coordonnees, couleur));

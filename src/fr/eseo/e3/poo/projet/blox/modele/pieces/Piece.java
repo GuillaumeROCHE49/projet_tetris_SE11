@@ -45,6 +45,28 @@ public abstract class Piece {
             element.deplacerDe(deltaX, deltaY);
     }
 
+    public void tourner(boolean sensHoraire){
+        // Translater les Elements de la Piece d’un vecteur (dx, dy) afin que l’Element de référence de la
+        // Piece (le premier element) se trouve à l’origine du repère.
+        int dx = -this.elements.get(0).getCoordonnees().getAbscisse();
+        int dy = -this.elements.get(0).getCoordonnees().getOrdonnee();
+        for (Element element : this.elements)
+            element.deplacerDe(dx, dy);
+        
+        // Effectuer la rotation des Elements de la Piece (sauf l’Element de référence) avec l’origine du repère
+        // comme centre de la rotation
+        for (Element element : this.elements)
+            if (element != this.elements.get(0))
+                element.deplacerDe((int)(element.getCoordonnees().getAbscisse() * Math.cos(Math.PI/2) -
+                                            element.getCoordonnees().getOrdonnee() * Math.sin(Math.PI/2)),
+                                   (int)(element.getCoordonnees().getAbscisse() * Math.sin(Math.PI/2) +
+                                            element.getCoordonnees().getOrdonnee() * Math.cos(Math.PI/2)));
+        
+        // Translater les Elements de la Piece d’un vecteur (−dx, −dy) afin de revenir dans le repère initial.
+        for (Element element : this.elements)
+            element.deplacerDe(-dx, -dy);
+    }
+
     @Override
     public String toString() {
         String str = "Piece :\n";
