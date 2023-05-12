@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import fr.eseo.e3.poo.projet.blox.controleur.PieceDeplacement;
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
@@ -33,6 +34,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.setPuits(puits);
         this.setBackground(java.awt.Color.WHITE);
         this.vuePiece = null;
+        // Ajouter PieceDeplacement comme MouseMotionListener
+        PieceDeplacement pieceDeplacement = new PieceDeplacement(this);
+        this.addMouseMotionListener(pieceDeplacement);
+        this.addMouseListener(pieceDeplacement);
+        this.addMouseWheelListener(pieceDeplacement);
     }
 
     public Puits getPuits() {
@@ -57,8 +63,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
     public void setPuits(Puits puits) {
         this.puits = puits;
-        this.largeur = taille * puits.getLargeur();
-        this.profondeur = taille * puits.getProfondeur();
+        this.largeur = this.getTaille() * puits.getLargeur();
+        this.profondeur = this.getTaille() * puits.getProfondeur();
         this.getPuits().addPropertyChangeListener(this);
         this.setPreferredSize(new Dimension(
             this.largeur, this.profondeur));
@@ -75,9 +81,9 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         // Dessiner la grille using 
         g2D.setColor(java.awt.Color.LIGHT_GRAY);
         // Dessiner les carrées
-        for (int i = 0; i < this.getWidth(); i+=this.taille) {
-            for (int j = 0; j < this.getHeight(); j+=this.taille) {
-                g2D.drawRect(i, j, this.taille, this.taille);
+        for (int x = 0; x < this.getWidth(); x+=this.taille) {
+            for (int y = 0; y < this.getHeight(); y+=this.taille) {
+                g2D.drawRect(x, y, this.taille, this.taille);
             }
         }
         // Dessiner les pieces

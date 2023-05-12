@@ -69,7 +69,7 @@ public class VuePuitsAffichageTest {
         VuePuits vuePuits = new VuePuits(new Puits(10, 20), 30);
 
         // Generer la piece ----------------------------------
-        UsineDePiece.setMode(UsineDePiece.ALEATOIRE_COMPLET);
+        UsineDePiece.setMode(UsineDePiece.ALEATOIRE_PIECE);
         Piece piece = UsineDePiece.genererPiece();
         // Ajouter la piece au puits
         vuePuits.getPuits().setPieceSuivante(piece);
@@ -81,7 +81,7 @@ public class VuePuitsAffichageTest {
         // Creer une frame --------------------------------
         JFrame jFrame = new JFrame();
         // Ajoute un titre à la fenêtre
-        jFrame.setTitle("Puits et pièce");
+        jFrame.setTitle("Puits et pièce auto");
         jFrame.add(vuePuits);
         jFrame.pack();  // Redimensionne la fenêtre
         // Centre la fenêtre sur l'écran

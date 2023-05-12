@@ -67,9 +67,8 @@ public class OPieceTest {
 
 	// Test parametisé de la méthode deplacerDe
 	@ParameterizedTest
-	@CsvSource({ "0, 0, 0, 0, 0, 0", "0, 0, 1, 0, 1, 0", "0, 0, 0, 1, 0, 1", "0, 0, -1, 0, -1, 0",
-				"0, 0, 0, -1, 0, -1", "0, 0, 1, 1, 1, 1", "0, 0, -1, 1, -1, 1", "0, 0, -1, -1, -1, -1",
-				"0, 0, 1, -1, 1, -1" })
+	@CsvSource({ "0, 0, 0, 0, 0, 0", "0, 0, 1, 0, 1, 0", "0, 0, -1, 0, -1, 0",
+				"0, 0, 0, 1, 0, 1", "0, 0, 1, 1, 1, 1", "0, 0, -1, 1, -1, 1"})
 	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) {
 		OPiece piece = new OPiece(new Coordonnees(x, y), Couleur.BLEU);
 		piece.deplacerDe(dx, dy);
@@ -85,7 +84,27 @@ public class OPieceTest {
 	void testDeplacerDeErreur(){
 		OPiece piece = new OPiece(new Coordonnees(0, 0), Couleur.BLEU);
 		assertThrows(IllegalArgumentException.class, () -> {
-			piece.deplacerDe(1, 2);
+			piece.deplacerDe(1, -2);
 		});
+	}
+
+	// Tester la methode tourner
+	@Test
+	void testTourner() {
+		OPiece piece = new OPiece(new Coordonnees(0, 0), Couleur.BLEU);
+		piece.tourner(false);
+		List<Element> elements = piece.getElements();
+		assertEquals(4, elements.size());
+		assertEquals(new Element(new Coordonnees(0, 0), Couleur.BLEU), elements.get(0));
+		assertEquals(new Element(new Coordonnees(1, 0), Couleur.BLEU), elements.get(1));
+		assertEquals(new Element(new Coordonnees(0, -1), Couleur.BLEU), elements.get(2));
+		assertEquals(new Element(new Coordonnees(1, -1), Couleur.BLEU), elements.get(3));
+		piece.tourner(true);
+		elements = piece.getElements();
+		assertEquals(4, elements.size());
+		assertEquals(new Element(new Coordonnees(0, 0), Couleur.BLEU), elements.get(0));
+		assertEquals(new Element(new Coordonnees(1, 0), Couleur.BLEU), elements.get(1));
+		assertEquals(new Element(new Coordonnees(0, -1), Couleur.BLEU), elements.get(2));
+		assertEquals(new Element(new Coordonnees(1, -1), Couleur.BLEU), elements.get(3));
 	}
 }

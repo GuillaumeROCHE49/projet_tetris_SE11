@@ -53,19 +53,20 @@ public class Puits {
     }
 
     public void setPieceSuivante(Piece pieceSuivante) {
-        if (this.pieceSuivante != null) { // Si une pièce suivante existe déjà                   
+        if (this.pieceSuivante != null) { // Si une pièce suivante existe déjà
+            Piece oldPieceActuel = this.pieceActuelle; // On enregistre l'ancienne piece actuelle
             this.pieceActuelle = this.pieceSuivante;
-            this.pieceActuelle.setPosition(LARGEUR_PAR_DEFAUT/2, -4);
+            this.pieceActuelle.setPosition(this.largeur/2, -4); // On la place au dessus du puits
             this.pieceSuivante = pieceSuivante;
 
             this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE,
-                    this.pieceSuivante, pieceSuivante);
-            this.pcs.firePropertyChange(MODIFICATION_PIECE_ACTUELLE,
                     this.pieceActuelle, this.pieceSuivante); // On notifie les vues
+            this.pcs.firePropertyChange(MODIFICATION_PIECE_ACTUELLE,
+                    oldPieceActuel, this.pieceActuelle);
         } else {
             this.pieceSuivante = pieceSuivante; // Si aucune pièce suivante
             this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE,
-                    this.pieceSuivante, pieceSuivante);
+                    null, pieceSuivante);
         }
     }
 

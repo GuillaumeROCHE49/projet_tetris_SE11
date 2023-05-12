@@ -38,11 +38,13 @@ public abstract class Piece {
 
     public void deplacerDe(int deltaX, int deltaY) throws IllegalArgumentException {
         // Verifier si le deplacement est possible
-        if (deltaX > 1 || deltaX < -1 || deltaY > 1)
-            throw new IllegalArgumentException("Deplacement impossible.");
-        
-        for (Element element : this.elements)
-            element.deplacerDe(deltaX, deltaY);
+        if (deltaX < -1 || deltaX > 1 || deltaY < 0 || deltaY > 1) {
+            throw new IllegalArgumentException("Deplacement impossible");
+        } else {
+            for (Element element: this.elements) {
+                element.deplacerDe(deltaX, deltaY);
+            }
+        }
     }
 
     public void tourner(boolean sensHoraire){
@@ -55,12 +57,15 @@ public abstract class Piece {
         
         // Effectuer la rotation des Elements de la Piece (sauf l’Element de référence) avec l’origine du repère
         // comme centre de la rotation
+        // (utiliser les formules de rotation du plan).
+        // Sens horraire definit par le signe du parametre sensHoraire
         for (Element element : this.elements)
             if (element != this.elements.get(0))
-                element.deplacerDe((int)(element.getCoordonnees().getAbscisse() * Math.cos(Math.PI/2) -
-                                            element.getCoordonnees().getOrdonnee() * Math.sin(Math.PI/2)),
-                                   (int)(element.getCoordonnees().getAbscisse() * Math.sin(Math.PI/2) +
-                                            element.getCoordonnees().getOrdonnee() * Math.cos(Math.PI/2)));
+                // definir les nouvelles coordonnees de l'element
+                element.setCoordonnees(new Coordonnees(
+                    sensHoraire ? -element.getCoordonnees().getOrdonnee() : element.getCoordonnees().getOrdonnee(),
+                    sensHoraire ? element.getCoordonnees().getAbscisse() : -element.getCoordonnees().getAbscisse()
+                ));
         
         // Translater les Elements de la Piece d’un vecteur (−dx, −dy) afin de revenir dans le repère initial.
         for (Element element : this.elements)
