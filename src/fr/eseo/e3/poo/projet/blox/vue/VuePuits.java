@@ -10,11 +10,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import fr.eseo.e3.poo.projet.blox.controleur.PieceDeplacement;
+import fr.eseo.e3.poo.projet.blox.controleur.PieceRotation;
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
 public class VuePuits extends JPanel implements PropertyChangeListener {
-    public static final int TAILLE_PAR_DEFAUT = 20;
+    public static final int TAILLE_PAR_DEFAUT = 15;
 
     private Puits puits;
     private VuePiece vuePiece;
@@ -39,6 +40,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
+        PieceRotation pieceRotation = new PieceRotation(this);
+        this.addMouseListener(pieceRotation);
     }
 
     public Puits getPuits() {

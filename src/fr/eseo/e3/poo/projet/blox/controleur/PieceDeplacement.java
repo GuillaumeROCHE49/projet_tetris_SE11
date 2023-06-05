@@ -1,15 +1,12 @@
 package fr.eseo.e3.poo.projet.blox.controleur;
 
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseAdapter;
 
+import fr.eseo.e3.poo.projet.blox.modele.BloxException;
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
 import fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 
-public class PieceDeplacement implements MouseMotionListener,
-                                         MouseWheelListener,
-                                         MouseListener {
+public class PieceDeplacement extends MouseAdapter {
     private VuePuits vuePuits;
     private Puits puits;
 
@@ -43,28 +40,21 @@ public class PieceDeplacement implements MouseMotionListener,
         }
     }
 
-    public void mouseDragged(java.awt.event.MouseEvent event) {}
-
     public void mouseEntered(java.awt.event.MouseEvent event) {
         this.derniereColonne = event.getX() / this.vuePuits.getTaille();
     }
 
-    public void mouseExited(java.awt.event.MouseEvent event) {}
-
-    public void mousePressed(java.awt.event.MouseEvent event) {}
-
-    public void mouseReleased(java.awt.event.MouseEvent event) {}
-
     public void mouseWheelMoved(java.awt.event.MouseWheelEvent event) {
         if(this.puits.getPieceActuelle() != null) {
             int rotation = event.getWheelRotation();
-            System.out.println(rotation);
-            if (rotation > 0) {
-                this.puits.getPieceActuelle().deplacerDe(0, rotation);
+            if (rotation > 0){
+                try{
+                    this.puits.getPieceActuelle().deplacerDe(0, rotation);
+                }catch(BloxException e){
+                    System.out.println("Erreur deplacement");
+                }
             }
             vuePuits.repaint();
         }        
     }
-
-    public void mouseClicked(java.awt.event.MouseEvent event) {}
 }

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import fr.eseo.e3.poo.projet.blox.modele.BloxException;
 import fr.eseo.e3.poo.projet.blox.modele.Coordonnees;
 import fr.eseo.e3.poo.projet.blox.modele.Couleur;
 import fr.eseo.e3.poo.projet.blox.modele.Element;
@@ -69,7 +70,7 @@ public class OPieceTest {
 	@ParameterizedTest
 	@CsvSource({ "0, 0, 0, 0, 0, 0", "0, 0, 1, 0, 1, 0", "0, 0, -1, 0, -1, 0",
 				"0, 0, 0, 1, 0, 1", "0, 0, 1, 1, 1, 1", "0, 0, -1, 1, -1, 1"})
-	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) {
+	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) throws BloxException {
 		OPiece piece = new OPiece(new Coordonnees(x, y), Couleur.BLEU);
 		piece.deplacerDe(dx, dy);
 		List<Element> elements = piece.getElements();

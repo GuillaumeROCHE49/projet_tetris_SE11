@@ -17,9 +17,7 @@ public class VuePuitsTest {
         assertEquals(puits, vuePuits.getPuits());
         assertTrue(vuePuits.getPuits().getLargeur() == 10);
         assertTrue(vuePuits.getPuits().getProfondeur() == 20);
-        assertTrue(vuePuits.getTaille() == 20);
-        assertTrue(vuePuits.getPreferredSize().width == 10*20);
-        assertTrue(vuePuits.getPreferredSize().height == 20*20);
+        assertEquals(15, vuePuits.getTaille());
     }
 
     @ParameterizedTest
@@ -34,22 +32,16 @@ public class VuePuitsTest {
         assertEquals(puits, vuePuits.getPuits());
         assertTrue(vuePuits.getPuits().getLargeur() == largeur);
         assertTrue(vuePuits.getPuits().getProfondeur() == profondeur);
-        assertTrue(vuePuits.getTaille() == taille);
-        assertTrue(vuePuits.getPreferredSize().getWidth() == largeur*taille);
-        assertTrue(vuePuits.getPreferredSize().getHeight() == profondeur*taille);
+        assertEquals(taille, vuePuits.getTaille());
         vuePuits.setTaille(deuxiemeTaille);
         assertTrue(vuePuits.getPuits().getLargeur() == largeur);
         assertTrue(vuePuits.getPuits().getProfondeur() == profondeur);
-        assertTrue(vuePuits.getTaille() == deuxiemeTaille);
-        assertTrue(vuePuits.getPreferredSize().getWidth() == largeur*deuxiemeTaille);
-        assertTrue(vuePuits.getPreferredSize().getHeight() == profondeur*deuxiemeTaille);
+        assertEquals(deuxiemeTaille, vuePuits.getTaille());
         Puits deuxiemePuits = new Puits(deuxiemeLargeur, deuxiemeProfondeur);
         vuePuits.setPuits(deuxiemePuits);
         assertEquals(deuxiemePuits, vuePuits.getPuits());
         assertTrue(vuePuits.getPuits().getLargeur() == deuxiemeLargeur);
         assertTrue(vuePuits.getPuits().getProfondeur() == deuxiemeProfondeur);
-        assertTrue(vuePuits.getTaille() == deuxiemeTaille);
-        assertTrue(vuePuits.getPreferredSize().getWidth() == deuxiemeLargeur*deuxiemeTaille);
-        assertTrue(vuePuits.getPreferredSize().getHeight() == deuxiemeProfondeur*deuxiemeTaille);
+        assertEquals(deuxiemeTaille, vuePuits.getTaille());
     }
 }

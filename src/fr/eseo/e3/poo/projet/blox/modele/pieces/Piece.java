@@ -3,6 +3,7 @@ package fr.eseo.e3.poo.projet.blox.modele.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eseo.e3.poo.projet.blox.modele.BloxException;
 import fr.eseo.e3.poo.projet.blox.modele.Coordonnees;
 import fr.eseo.e3.poo.projet.blox.modele.Couleur;
 import fr.eseo.e3.poo.projet.blox.modele.Element;
@@ -36,15 +37,27 @@ public abstract class Piece {
         this.puits = puits;
     }
 
-    public void deplacerDe(int deltaX, int deltaY) throws IllegalArgumentException {
+    public void deplacerDe(int deltaX, int deltaY) throws IllegalArgumentException, BloxException {
         // Verifier si le deplacement est possible
-        if (deltaX < -1 || deltaX > 1 || deltaY < 0 || deltaY > 1) {
+        if (deltaX < -1 || deltaX > 1 || deltaY < 0 || deltaY > 1)
             throw new IllegalArgumentException("Deplacement impossible");
-        } else {
-            for (Element element: this.elements) {
-                element.deplacerDe(deltaX, deltaY);
+        if (sortieDePuits(deltaX))
+            throw new BloxException("Sortie de puits", BloxException.BLOX_SORTIE_PUITS);
+
+        for (Element element: this.elements)
+            element.deplacerDe(deltaX, deltaY);
+    }
+
+    private boolean sortieDePuits(int deltaX){
+        if (this.puits != null) {
+            System.out.println("Largeur puits : " + this.puits.getLargeur());
+            for (Element element : this.elements) {
+                int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
+                if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur())
+                    return true;
             }
         }
+        return false;
     }
 
     public void tourner(boolean sensHoraire){
@@ -55,10 +68,6 @@ public abstract class Piece {
         for (Element element : this.elements)
             element.deplacerDe(dx, dy);
         
-        // Effectuer la rotation des Elements de la Piece (sauf l’Element de référence) avec l’origine du repère
-        // comme centre de la rotation
-        // (utiliser les formules de rotation du plan).
-        // Sens horraire definit par le signe du parametre sensHoraire
         for (Element element : this.elements)
             if (element != this.elements.get(0))
                 // definir les nouvelles coordonnees de l'element

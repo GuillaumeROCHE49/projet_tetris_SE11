@@ -20,6 +20,7 @@ public class Puits {
     private int profondeur;
     private Piece pieceActuelle;
     private Piece pieceSuivante;
+    private Tas tas;
 
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     
@@ -34,6 +35,12 @@ public class Puits {
             throw new IllegalArgumentException("Dimensions incorrectes");
         this.largeur = largeur;
         this.profondeur = profondeur;
+        this.tas = new Tas(this);
+    }
+
+    public Puits(int largeur, int profondeur, int nbElements, int nbLignes) throws IllegalArgumentException {
+        this(largeur, profondeur);
+        this.tas = new Tas(this, nbElements, nbLignes);
     }
 
     public int getLargeur() {
@@ -88,6 +95,14 @@ public class Puits {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.removePropertyChangeListener(listener);
+    }
+
+    public void setTas(Tas tas) {
+        this.tas = tas;
+    }
+
+    public Tas getTas() {
+        return this.tas;
     }
 
     @Override
