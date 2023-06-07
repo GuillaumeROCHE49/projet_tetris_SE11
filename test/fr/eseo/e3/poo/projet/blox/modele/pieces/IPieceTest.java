@@ -96,7 +96,7 @@ public class IPieceTest {
 
 	// Tester la methode tourner
 	@Test
-	void testTourner() {
+	void testTourner() throws BloxException {
 		IPiece piece = new IPiece(new Coordonnees(0, 0), Couleur.BLEU);
 		piece.tourner(true);
 		List<Element> elements = piece.getElements();

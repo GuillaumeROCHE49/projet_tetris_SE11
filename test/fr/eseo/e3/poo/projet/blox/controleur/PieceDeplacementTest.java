@@ -26,7 +26,7 @@ public class PieceDeplacementTest {
         Piece piece2 = UsineDePiece.genererPiece();
         vuePuits.getPuits().setPieceSuivante(piece2);
 
-        piece.setPosition(4, 10);
+        piece.setPosition(4, -4);
 
         // Creer une frame --------------------------------
         JFrame jFrame = new JFrame();

@@ -1,5 +1,6 @@
 package fr.eseo.e3.poo.projet.blox.modele.pieces;
 
+import fr.eseo.e3.poo.projet.blox.modele.BloxException;
 import fr.eseo.e3.poo.projet.blox.modele.Coordonnees;
 import fr.eseo.e3.poo.projet.blox.modele.Couleur;
 import fr.eseo.e3.poo.projet.blox.modele.Element;
@@ -11,7 +12,7 @@ public class OPiece extends Piece {
     }
 
     @Override
-    public void tourner(boolean sensHoraire) {
+    public void tourner(boolean sensHoraire) throws BloxException{
         // Ne fait rien
     }
 

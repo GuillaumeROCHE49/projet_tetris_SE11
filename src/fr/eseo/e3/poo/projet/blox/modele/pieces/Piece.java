@@ -42,30 +42,37 @@ public abstract class Piece {
         if (deltaX < -1 || deltaX > 1 || deltaY < 0 || deltaY > 1)
             throw new IllegalArgumentException("Deplacement impossible");
         
-        if(this.getPuits() != null){  
-            if (this.sortieDePuits(deltaX))
-                throw new BloxException("Sortie de puits", BloxException.BLOX_SORTIE_PUITS);
-            else if (this.collision(deltaX, deltaY))
-                throw new BloxException("Collision", BloxException.BLOX_COLLISION);
-        }
+        if (this.sortieDePuits(deltaX))
+            throw new BloxException("Sortie de puits", BloxException.BLOX_SORTIE_PUITS);
         
-        for (Element element: this.elements)
-            element.deplacerDe(deltaX, deltaY);
+        if (this.collision(deltaX, deltaY))
+            throw new BloxException("Collision", BloxException.BLOX_COLLISION);
+        
+        this.translater(deltaX, deltaY);
     }
 
     private boolean collision(int deltaX, int deltaY) {
-        for (Element element : this.elements) {
-            int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
-            int newOrdonnee = element.getCoordonnees().getOrdonnee() + deltaY;
-            if (newOrdonnee >= this.puits.getProfondeur())
-                return true;
-            if (this.puits.getTas().getElements()[newOrdonnee][newAbscisse] != null)
-                return true;
+        if(this.getPuits() != null){
+            for (Element element : this.elements) {
+                int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
+                int newOrdonnee = element.getCoordonnees().getOrdonnee() + deltaY;
+                // Si l'element sort du puits, continue
+                if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur() ||
+                newOrdonnee < 0)
+                    continue;
+                if ((newOrdonnee >= this.puits.getProfondeur()) ||
+                        (this.puits.getTas().getElements()[newOrdonnee][newAbscisse] != null)){
+                    return true;
+                }
+            }
         }
         return false;
     }
 
-    private boolean sortieDePuits(int deltaX){
+    private boolean sortieDePuits(int deltaX) {
+        if(this.getPuits() == null)
+            return false;
+        
         for (Element element : this.elements) {
             int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
             if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur())
@@ -74,13 +81,56 @@ public abstract class Piece {
         return false;
     }
 
-    public void tourner(boolean sensHoraire){
-        // Translater les Elements de la Piece d’un vecteur (dx, dy) afin que l’Element de référence de la
-        // Piece (le premier element) se trouve à l’origine du repère.
+    private boolean verifierTournerSortie(boolean sensHoraire, int dx) {
+        // Return true si le tourner est possible
+        if (this.getPuits() != null){
+            for (Element element : this.elements){
+                // Verifie seulement la sortie de puit
+                int newAbscisse = element.getCoordonnees().getAbscisse() + dx;
+                if (element != this.elements.get(0))
+                    newAbscisse = sensHoraire ? -newAbscisse : newAbscisse;
+                newAbscisse -= dx;
+                System.out.println(newAbscisse);
+                if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur())
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean verifierTournerCollision(boolean sensHoraire) {
+        // Return true si le tourner est possible
+        if (this.getPuits() != null){
+            for (Element element : this.elements){
+                int newAbscisse = sensHoraire ? -element.getCoordonnees().getOrdonnee() : element.getCoordonnees().getOrdonnee();
+                int newOrdonnee = sensHoraire ? element.getCoordonnees().getAbscisse() : -element.getCoordonnees().getAbscisse();
+                if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur() ||
+                newOrdonnee < 0)
+                    continue;
+                if ((newOrdonnee >= this.puits.getProfondeur()) ||
+                        (this.puits.getTas().getElements()[newOrdonnee][newAbscisse] != null))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private void translater(int deltaX, int deltaY) {
+        for (Element element : this.elements)
+            element.deplacerDe(deltaX, deltaY);
+    }
+    
+    public void tourner(boolean sensHoraire) throws BloxException {
         int dx = -this.elements.get(0).getCoordonnees().getAbscisse();
         int dy = -this.elements.get(0).getCoordonnees().getOrdonnee();
-        for (Element element : this.elements)
-            element.deplacerDe(dx, dy);
+
+        // Verifier les sorties de puits et les collisions
+        if (!this.verifierTournerSortie(sensHoraire, dx))
+            throw new BloxException("Sortie de puits", BloxException.BLOX_SORTIE_PUITS);
+                
+        // Translater les Elements de la Piece d’un vecteur (dx, dy) afin que l’Element de référence de la
+        // Piece (le premier element) se trouve à l’origine du repère.
+        this.translater(dx, dy);
         
         for (Element element : this.elements)
             if (element != this.elements.get(0))
@@ -91,8 +141,7 @@ public abstract class Piece {
                 ));
         
         // Translater les Elements de la Piece d’un vecteur (−dx, −dy) afin de revenir dans le repère initial.
-        for (Element element : this.elements)
-            element.deplacerDe(-dx, -dy);
+        this.translater(-dx, -dy);
     }
 
     @Override
