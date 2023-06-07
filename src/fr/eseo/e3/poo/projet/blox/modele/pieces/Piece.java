@@ -86,13 +86,7 @@ public abstract class Piece {
     
     public void tourner(boolean sensHoraire) throws BloxException {
         // Copie element
-        List<Element> elementsCopy = new ArrayList<>();
-        for (Element element : this.elements){
-            Element elementCopy = new Element(new Coordonnees(element.getCoordonnees().getAbscisse(),
-                                                              element.getCoordonnees().getOrdonnee()),
-                                              element.getCouleur());
-            elementsCopy.add(elementCopy);
-        }
+        List<Element> elementsCopy = this.copy();
         
         // Tourner la copie
         this.tournerElements(elementsCopy, sensHoraire);
@@ -124,6 +118,17 @@ public abstract class Piece {
         
         // Translater les Elements de la Piece d’un vecteur (−dx, −dy) afin de revenir dans le repère initial.
         this.translater(elementsATourner, -dx, -dy);
+    }
+
+    public List<Element> copy(){
+        List<Element> elementsCopy = new ArrayList<>();
+        for (Element element : this.elements){
+            Element elementCopy = new Element(new Coordonnees(element.getCoordonnees().getAbscisse(),
+                                                              element.getCoordonnees().getOrdonnee()),
+                                              element.getCouleur());
+            elementsCopy.add(elementCopy);
+        }
+        return elementsCopy;
     }
 
     @Override
