@@ -70,9 +70,13 @@ public class OPieceTest {
 	@ParameterizedTest
 	@CsvSource({ "0, 0, 0, 0, 0, 0", "0, 0, 1, 0, 1, 0", "0, 0, -1, 0, -1, 0",
 				"0, 0, 0, 1, 0, 1", "0, 0, 1, 1, 1, 1", "0, 0, -1, 1, -1, 1"})
-	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) throws BloxException {
+	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) {
 		OPiece piece = new OPiece(new Coordonnees(x, y), Couleur.BLEU);
-		piece.deplacerDe(dx, dy);
+		try {
+			piece.deplacerDe(dx, dy);
+		} catch (BloxException e) {
+			e.printStackTrace();
+		}
 		List<Element> elements = piece.getElements();
 		assertEquals(4, elements.size());
 		assertEquals(new Element(new Coordonnees(xFinal, yFinal), Couleur.BLEU), elements.get(0));
@@ -86,6 +90,17 @@ public class OPieceTest {
 		OPiece piece = new OPiece(new Coordonnees(0, 0), Couleur.BLEU);
 		assertThrows(IllegalArgumentException.class, () -> {
 			piece.deplacerDe(1, -2);
+		});
+	}
+
+	// Test si la piece sort du puit
+	@Test
+	void testDeplacerDeSortiePuits() {
+		OPiece piece = new OPiece(new Coordonnees(0, 0), Couleur.BLEU);
+		Puits puits = new Puits();
+		piece.setPuits(puits);
+		assertThrows(BloxException.class, () -> {
+			piece.deplacerDe(-1, 1);
 		});
 	}
 

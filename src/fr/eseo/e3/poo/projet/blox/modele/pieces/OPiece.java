@@ -7,6 +7,7 @@ import fr.eseo.e3.poo.projet.blox.modele.Element;
 public class OPiece extends Piece {
     public OPiece(Coordonnees coordonnees, Couleur couleur) {
         super(coordonnees, couleur);
+       
     }
 
     @Override

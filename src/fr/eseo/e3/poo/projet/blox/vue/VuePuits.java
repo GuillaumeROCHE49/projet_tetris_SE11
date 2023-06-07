@@ -35,6 +35,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.setPuits(puits);
         this.setBackground(java.awt.Color.WHITE);
         this.vuePiece = null;
+        this.puits.addPropertyChangeListener(this);
         // Ajouter PieceDeplacement comme MouseMotionListener
         PieceDeplacement pieceDeplacement = new PieceDeplacement(this);
         this.addMouseMotionListener(pieceDeplacement);
@@ -101,7 +102,10 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         // Verifier que l'evenement concerne PieceActuelle
         if (event.getPropertyName().equals(Puits.MODIFICATION_PIECE_ACTUELLE)) {
             // Mettre a jour la vue de la piece
-            this.setVuePiece(new VuePiece((Piece)event.getNewValue(), this.getTaille()));
+            Piece piece = (Piece)event.getNewValue();
+            if(piece!=null)
+                this.setVuePiece(new VuePiece(piece, this.getTaille()));
+            this.repaint();
         }
     }
 }

@@ -71,9 +71,13 @@ public class IPieceTest {
 	@ParameterizedTest
 	@CsvSource({ "0, 0, 0, 0, 0, 0", "0, 0, 1, 0, 1, 0", "0, 0, 0, 1, 0, 1", "0, 0, 1, 0, 1, 0",
 				 "0, 0, 1, 1, 1, 1", "0, 0, -1, 1, -1, 1", "0, 0, -1, 1, -1, 1"})
-	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) throws BloxException {
+	void testDeplacerDe(int x, int y, int dx, int dy, int xFinal, int yFinal) {
 		IPiece piece = new IPiece(new Coordonnees(x, y), Couleur.BLEU);
-		piece.deplacerDe(dx, dy);
+		try{
+			piece.deplacerDe(dx, dy);
+		} catch (BloxException e) {
+			e.printStackTrace();
+		}
 		List<Element> elements = piece.getElements();
 		assertEquals(4, elements.size());
 		assertEquals(new Element(new Coordonnees(xFinal, yFinal), Couleur.BLEU), elements.get(0));

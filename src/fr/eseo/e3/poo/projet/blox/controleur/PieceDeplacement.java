@@ -27,15 +27,15 @@ public class PieceDeplacement extends MouseAdapter {
             // Si on a changé de colonne
             if(this.derniereColonne != colonne) {
                 // Les deplacement se font entre 1 et -1
+                int deplacement = (colonne - this.derniereColonne>0)? 1 :-1;
+                System.out.println("Deplacement: " + deplacement);
                 try{
-                    int deplacement = colonne - this.derniereColonne;
                     this.puits.getPieceActuelle().deplacerDe(deplacement, 0);
-                    this.derniereColonne = colonne;
-                    vuePuits.repaint();
-                }catch(Exception e){
-                    System.out.println("Erreur deplacement");
+                } catch(BloxException e) {
+                    System.out.println("Erreur deplacement: " + e.getMessage());
                 }
-                
+                this.derniereColonne = colonne;
+                vuePuits.repaint();
             }
         }
     }
@@ -49,9 +49,9 @@ public class PieceDeplacement extends MouseAdapter {
             int rotation = event.getWheelRotation();
             if (rotation > 0){
                 try{
-                    this.puits.getPieceActuelle().deplacerDe(0, rotation);
+                    this.puits.getPieceActuelle().deplacerDe(0, 1);
                 }catch(BloxException e){
-                    System.out.println("Erreur deplacement");
+                    System.out.println("Erreur deplacement: " + e.getMessage());
                 }
             }
             vuePuits.repaint();

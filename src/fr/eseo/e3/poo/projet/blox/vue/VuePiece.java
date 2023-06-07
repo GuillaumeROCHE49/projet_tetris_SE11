@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class VuePiece {
-    public static final double MULTIPLIER_TEINTE = 0.5;
+    public static final double MULTIPLIER_TEINTE = 0.3;
 
     private final int taille;
     private final Piece piece;
@@ -40,9 +40,8 @@ public class VuePiece {
 
             // Changement de la couleur si l'element est le premier de la liste
             Color couleur = element.getCouleur().getCouleurPourAffichage();
-            if(iterateur.nextIndex() == 1){
+            if(iterateur.nextIndex() == 1)
                 couleur = this.teinte(element.getCouleur().getCouleurPourAffichage());
-            }
 
             // Affichage de l'element
             g2D.setColor(couleur);

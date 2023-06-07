@@ -41,21 +41,35 @@ public abstract class Piece {
         // Verifier si le deplacement est possible
         if (deltaX < -1 || deltaX > 1 || deltaY < 0 || deltaY > 1)
             throw new IllegalArgumentException("Deplacement impossible");
-        if (sortieDePuits(deltaX))
-            throw new BloxException("Sortie de puits", BloxException.BLOX_SORTIE_PUITS);
-
+        
+        if(this.getPuits() != null){  
+            if (this.sortieDePuits(deltaX))
+                throw new BloxException("Sortie de puits", BloxException.BLOX_SORTIE_PUITS);
+            else if (this.collision(deltaX, deltaY))
+                throw new BloxException("Collision", BloxException.BLOX_COLLISION);
+        }
+        
         for (Element element: this.elements)
             element.deplacerDe(deltaX, deltaY);
     }
 
+    private boolean collision(int deltaX, int deltaY) {
+        for (Element element : this.elements) {
+            int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
+            int newOrdonnee = element.getCoordonnees().getOrdonnee() + deltaY;
+            if (newOrdonnee >= this.puits.getProfondeur())
+                return true;
+            if (this.puits.getTas().getElements()[newOrdonnee][newAbscisse] != null)
+                return true;
+        }
+        return false;
+    }
+
     private boolean sortieDePuits(int deltaX){
-        if (this.puits != null) {
-            System.out.println("Largeur puits : " + this.puits.getLargeur());
-            for (Element element : this.elements) {
-                int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
-                if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur())
-                    return true;
-            }
+        for (Element element : this.elements) {
+            int newAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
+            if (newAbscisse < 0 || newAbscisse >= this.puits.getLargeur())
+                return true;
         }
         return false;
     }
