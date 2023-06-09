@@ -104,6 +104,30 @@ public class Puits {
         return this.tas;
     }
 
+    private void gererCollision(){
+        if (this.pieceActuelle != null){
+            this.tas.ajouterElements(pieceActuelle);
+            UsineDePiece.setMode(UsineDePiece.ALEATOIRE_PIECE);
+            Piece piece = UsineDePiece.genererPiece();
+            this.setPieceSuivante(piece);
+        }
+    }
+
+    public void gravite(){
+        if (this.pieceActuelle != null){
+            try{
+                this.pieceActuelle.deplacerDe(0, 1);
+            } catch (BloxException e){
+                if (e.getType() == BloxException.BLOX_COLLISION){
+                    this.gererCollision();
+                }
+                System.out.println(e.getMessage());
+            } catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public String toString() {
         String str = "Puits : Dimension "+ this.largeur +" x " +

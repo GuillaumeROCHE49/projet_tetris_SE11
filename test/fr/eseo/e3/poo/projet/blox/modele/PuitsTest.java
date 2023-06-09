@@ -1,6 +1,8 @@
 package fr.eseo.e3.poo.projet.blox.modele;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -59,5 +61,59 @@ public class PuitsTest {
         // Test la position de la pièce actuelle
         assertEquals(5, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
         assertEquals(-4, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+    }
+
+    // Test gravite
+    @Test
+    void testGravite(){
+        Puits puits = new Puits(5, 15);
+        Piece piece1 = new OPiece(new Coordonnees(0, 0), Couleur.BLEU);
+        puits.setPieceSuivante(piece1);
+        Piece piece2 = new IPiece(new Coordonnees(0, 0), Couleur.ROUGE);
+        puits.setPieceSuivante(piece2);
+        puits.gravite();
+        // Test la position de la pièce actuelle
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(-3, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        // Test la position de la pièce actuelle
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(-2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        // Test la position de la pièce actuelle
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(-1, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        // Test la position de la pièce actuelle
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(0, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        // Test la position de la pièce actuelle
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(1, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(3, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        assertEquals(2, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse(), "Abscisse");
+        assertEquals(9, puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee(), "Ordonnee");
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        puits.gravite();
+        // Verifie que la piece a bien changée
+        assertEquals(piece2, puits.getPieceActuelle(), "Piece actuelle");
+        // Verifie que la piece suivante a bien changée
+        assertNotEquals(piece2, puits.getPieceSuivante(), "Piece suivante");
     }
 }

@@ -2,6 +2,8 @@ package fr.eseo.e3.poo.projet.blox.modele;
 
 import java.util.Random;
 
+import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
+
 public class Tas {
     private Element[][] elements;
 
@@ -47,6 +49,12 @@ public class Tas {
                 this.elements[ordon][absci] = new Element(absci, ordon, Couleur.values()[indiceCouleur]);
                 nbElementsPlace++;
             }
+        }
+    }
+
+    public void ajouterElements(Piece piece) {
+        for (Element element : piece.getElements()) {
+            this.elements[element.getCoordonnees().getOrdonnee()][element.getCoordonnees().getAbscisse()] = element;
         }
     }
 }
