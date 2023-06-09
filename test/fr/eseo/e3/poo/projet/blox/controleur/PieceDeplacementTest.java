@@ -14,8 +14,8 @@ public class PieceDeplacementTest {
     // correctement la pieceActuelle dans l’axe horizontal.
     private void createWindows(){
         // Creer une vuePuits --------------------------------
-        VuePuits vuePuits = new VuePuits(new Puits(10, 20), 30);
-
+        VuePuits vuePuits = new VuePuits(new Puits(10, 20, 10, 5), 30);
+        
         // Generer la piece ----------------------------------
         UsineDePiece.setMode(UsineDePiece.ALEATOIRE_PIECE);
         Piece piece = UsineDePiece.genererPiece();

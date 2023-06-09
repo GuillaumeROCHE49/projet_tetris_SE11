@@ -13,12 +13,14 @@ import fr.eseo.e3.poo.projet.blox.controleur.PieceDeplacement;
 import fr.eseo.e3.poo.projet.blox.controleur.PieceRotation;
 import fr.eseo.e3.poo.projet.blox.modele.Puits;
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
+import java.awt.Color;
 
 public class VuePuits extends JPanel implements PropertyChangeListener {
     public static final int TAILLE_PAR_DEFAUT = 15;
 
     private Puits puits;
     private VuePiece vuePiece;
+    private final VueTas vueTas;
 
     private int taille;
     private int largeur;
@@ -30,7 +32,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
     public VuePuits(Puits puits, int taille) {
         this.puits = puits;
-        this.taille = taille;
         this.setTaille(taille);
         this.setPuits(puits);
         this.setBackground(java.awt.Color.WHITE);
@@ -38,11 +39,13 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.puits.addPropertyChangeListener(this);
         // Ajouter PieceDeplacement comme MouseMotionListener
         PieceDeplacement pieceDeplacement = new PieceDeplacement(this);
+        PieceRotation pieceRotation = new PieceRotation(this);
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
-        PieceRotation pieceRotation = new PieceRotation(this);
         this.addMouseListener(pieceRotation);
+        // Ajout de la vueTas
+        this.vueTas = new VueTas(this);
     }
 
     public Puits getPuits() {
@@ -55,6 +58,10 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
     public VuePiece getVuePiece() {
         return this.vuePiece;
+    }
+
+    public VueTas getVueTas() {
+        return this.vueTas;
     }
 
     public void setTaille(int taille) {
@@ -79,21 +86,32 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g){
+
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g.create();
-        // Dessiner la grille using 
-        g2D.setColor(java.awt.Color.LIGHT_GRAY);
-        // Dessiner les carrées
-        for (int x = 0; x < this.getWidth(); x+=this.taille) {
-            for (int y = 0; y < this.getHeight(); y+=this.taille) {
-                g2D.drawRect(x, y, this.taille, this.taille);
-            }
+
+        g2D.setColor(Color.WHITE);
+        g2D.fillRect(0, 0, puits.getLargeur()*taille, puits.getProfondeur()*taille);
+
+        g2D.setColor(Color.LIGHT_GRAY);
+        for (int i = 0; i<= puits.getLargeur(); i++){
+            int x = i * taille;
+            g2D.drawLine(x, 0, x, puits.getProfondeur() * taille);
         }
-        // Dessiner les pieces
-        if (this.vuePiece != null) {
-            this.vuePiece.afficherPiece(g2D);
+        for (int i = 0; i <= puits.getProfondeur(); i++) {
+            int y = i * taille;
+            g2D.drawLine(0, y, puits.getLargeur() * taille, y);
         }
+
+        if (getVuePiece()!= null) {
+            getVuePiece().afficherPiece(g2D);
+        }
+
+        if (this.vueTas!= null){
+            this.vueTas.afficher(g2D);
+        }
+
         g2D.dispose();
     }
 
