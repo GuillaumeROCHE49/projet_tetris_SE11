@@ -87,7 +87,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
     @Override
     protected void paintComponent(Graphics g){
-
+        // Methode de Romain C. pour eviter le bug 3.7.2
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g.create();
 
