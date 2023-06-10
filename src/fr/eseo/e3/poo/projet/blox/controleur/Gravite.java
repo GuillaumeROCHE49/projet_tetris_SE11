@@ -17,6 +17,8 @@ public class Gravite implements ActionListener{
         this.vuePuits = vuePuits;
         this.puits = vuePuits.getPuits();
         this.timer = new Timer(1000, this);
+        this.timer.setInitialDelay(0);
+        this.start();
     }
 
     public int getPeriodicite(){
@@ -27,7 +29,13 @@ public class Gravite implements ActionListener{
         this.timer.setDelay(periodicite);
     }
 
+    public void start(){
+        this.timer.start();
+    }
+
     public void actionPerformed(java.awt.event.ActionEvent event){
+        System.out.println("Gravite");
         this.puits.gravite();
+        this.vuePuits.repaint();
     }
 }
